@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
@@ -24,6 +25,11 @@ namespace MobTest
             byte[] bytesOfFile = new byte[fileReader.Length];
             fileReader.Read(bytesOfFile, 0, (int)fileReader.Length);
             return GetHash(bytesOfFile);
+        }
+        internal static string GetStringHash(string _string)
+        {
+            byte[] bytesOfString = Encoding.UTF8.GetBytes(_string);
+            return GetHash(bytesOfString);
         }
     }
 }
