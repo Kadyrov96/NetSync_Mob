@@ -16,21 +16,9 @@ namespace MobTest
         private DataWriter socketWriter;
         private DataReader socketReader;
 
-        public StreamSocket TcpClient
-        {
-            get
-            {
-                return tcpClient;
-            }
-            private set
-            {
-                tcpClient = value;
-            }
-        }
-
         public IOStreamHandler(StreamSocket _TcpClient)
         {
-            TcpClient = _TcpClient;
+            tcpClient = _TcpClient;
             bufSize = 2048;
         }
 
@@ -50,7 +38,7 @@ namespace MobTest
         {
             try
             {
-                if (TcpClient != null)
+                if (tcpClient != null)
                 {
                     socketReader = new DataReader(tcpClient.InputStream);
                     socketReader.InputStreamOptions = InputStreamOptions.Partial;
@@ -92,8 +80,8 @@ namespace MobTest
         {
             try
             {
-                socketWriter = new DataWriter(TcpClient.OutputStream);
-                if (TcpClient != null)
+                socketWriter = new DataWriter(tcpClient.OutputStream);
+                if (tcpClient != null)
                 {
                     //Getting info about selected file
                     FileInfo fInfo = new FileInfo(filePath);
