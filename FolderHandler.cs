@@ -55,7 +55,7 @@ namespace MobTest
             }
         }
 
-        public bool IsFolderEmpty()
+        internal bool IsFolderEmpty()
         {
             if (folderElements.Length == 0)
             {
@@ -71,6 +71,20 @@ namespace MobTest
         {
             FileStream serviceFileCreator = File.Create(_full_file_path);
             serviceFileCreator.Close();
+        }
+
+        public string[] ReadTextFile(string _full_file_path)
+        {
+            List<string> textStrings = new List<string>();
+            TextReader statementFileReader = new StreamReader(_full_file_path);
+            {
+                string temp;
+                while ((temp = statementFileReader.ReadLine()) != null)
+                {
+                    textStrings.Add(temp);
+                }
+            }
+            return textStrings.ToArray();
         }
     }
 }
