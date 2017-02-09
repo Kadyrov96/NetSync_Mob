@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace MobTest
 {
@@ -31,7 +30,7 @@ namespace MobTest
         public Synchroniser(FolderHandler _folderToSync)
         {
             folderToSync = _folderToSync;
-            syncDataStoreFullPath = Directory.GetCurrentDirectory() + Hasher.GetFileHash(folderToSync.FolderPath);
+            syncDataStoreFullPath = Directory.GetCurrentDirectory() + Hasher.GetStringHash(folderToSync.FolderPath);
             local_folderToSyncElements = new List<FileDescript>();
 
             local_list = new SyncRecordList();
@@ -140,7 +139,7 @@ namespace MobTest
 
         private void ReadRemoteStateFile(string _dataStorage)
         {
-            string[] remoteSyncData = Fileю ReadAllLines(_dataStorage);
+            string[] remoteSyncData = folderToSync.ReadTextFile(_dataStorage);
             for (int i = 0; i < remoteSyncData.Length; i++)
             {
                 remote_list.AddRecord(
@@ -191,14 +190,26 @@ namespace MobTest
             tmpNamesList.Clear();
             tmpHashList.Clear();
         }
-
+        public bool IsSyncDataStoreExists()
+        {
+            string hashTableName = Hasher.GetStringHash(folderToSync.FolderPath);
+            string[] hashTableSearchResults = Directory.GetFiles(Directory.GetCurrentDirectory());
+            bool result = false;
+            foreach (var searchResult in hashTableSearchResults)
+            {
+                if (searchResult.Equals(hashTableName))
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
         public void CreateSyncDataStore()
         {
             //Creating and filling the file, that includes synchronization data of the concrete folder
             folderToSync.CreateServiceFile(syncDataStoreFullPath + @".dat");
             StreamWriter hashTableWriter = new StreamWriter(syncDataStoreFullPath + @".dat");
 
-            byte[] folderElementBuffer;
             for (int i = 0; i < folderToSync.FolderElements.Length; i++)
             {
                 hashTableWriter.WriteLine(folderToSync.FolderElements[i] + "***" + Hasher.GetFileHash(folderToSync.FolderElements[i]));
@@ -211,7 +222,7 @@ namespace MobTest
 
         public void ReadSyncDataStore()
         {
-            string[] syncDataStoreRecords = File.ReadAllLines(syncDataStoreFullPath + @".dat");
+            string[] syncDataStoreRecords = folderToSync.ReadTextFile(syncDataStoreFullPath + @".dat");
             syncDataStoreRecords_List = new List<string>(syncDataStoreRecords);
 
             //DataStore file exists, but it is empty.
