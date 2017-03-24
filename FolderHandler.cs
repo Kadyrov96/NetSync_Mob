@@ -9,33 +9,9 @@ namespace MobTest
 {
     class FolderHandler
     {
-        private string folderPath;
-        private IReadOnlyList<IStorageItem> folderElementsList;
-
-        public string FolderPath
-        {
-            private set
-            {
-                folderPath = value;
-            }
-            get
-            {
-                return folderPath;
-            }
-        }
-
-        private string[] folderElements;
-        public string[] FolderElements
-        {
-            private set
-            {
-                folderElements = value;
-            }
-            get
-            {
-                return folderElements;
-            }
-        }
+        IReadOnlyList<IStorageItem> folderElementsList;
+        public string FolderPath { get; private set; }
+        public string[] FolderElements { get; private set; }
 
         internal async void SelectFolder()
         {
@@ -47,7 +23,7 @@ namespace MobTest
             {
                 MessageBox.Show("Picked folder: " + FolderPath, "Service information", MessageBoxButton.OK);
                 Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
-                folderElementsList = await folder.GetItemsAsync();
+                FolderElements = await folder.GetItemsAsync();
             }
             else
             {
@@ -57,14 +33,7 @@ namespace MobTest
 
         internal bool IsFolderEmpty()
         {
-            if (folderElements.Length == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return FolderElements.Length == 0;
         }
 
         public void CreateServiceFile(string _full_file_path)

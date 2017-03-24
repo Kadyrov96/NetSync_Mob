@@ -11,20 +11,8 @@ namespace MobTest
 {
     class SSL_Client
     {
-        private StreamSocket tcpClient;
-
-        public StreamSocket TcpClient
-        {
-            get
-            {
-                return tcpClient;
-            }
-
-            set
-            {
-                tcpClient = value;
-            }
-        }
+        StreamSocket tcpClient;
+        public StreamSocket TcpClient { get; private set; }
 
         public SSL_Client()
         {
@@ -32,7 +20,7 @@ namespace MobTest
             serverCertificate = new X509Certificate2(@"C:\Users\Admin\Desktop\123.pfx", "vbhs456");
             listener = new TcpListener(Dns.GetHostEntry(host).AddressList[0], 816);
         }
-        internal async void ConnectToServer(string _hostname)
+        public async void ConnectToServer(string _hostname)
         {
             while (tcpClient == null)
             {
@@ -51,7 +39,7 @@ namespace MobTest
 
         }
 
-        internal void Disconnect()
+        public void Disconnect()
         {
             TcpClient.Dispose();
             TcpClient = null;

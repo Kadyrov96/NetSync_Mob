@@ -8,20 +8,16 @@ namespace MobTest
 {
     class SyncRecordList
     {
-        private int count;
-        public int Count
-        {
-            private set
-            {
-                count = names.Count;
-            }
-            get
-            {
-                return count;
-            }
-        }
         public List<string> names;
         public List<int> keys;
+        public int Count
+        {
+            get
+            {
+                return names.Count;
+            }
+        }
+
         public SyncRecordList()
         {
             names = new List<string>();

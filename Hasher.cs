@@ -9,7 +9,7 @@ namespace MobTest
 {
     class Hasher
     {
-        internal static string GetHash(byte[] byteInput)
+        static string GetHash(byte[] byteInput)
         {
             HashAlgorithmProvider provider = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
             CryptographicHash cryptoHash = provider.CreateHash();
@@ -19,14 +19,14 @@ namespace MobTest
             return CryptographicBuffer.EncodeToHexString(b_hash);
         }
 
-        internal static string GetFileHash(string filePath)
+        public static string GetFileHash(string filePath)
         {
             FileStream fileReader = File.OpenRead(filePath);
             byte[] bytesOfFile = new byte[fileReader.Length];
             fileReader.Read(bytesOfFile, 0, (int)fileReader.Length);
             return GetHash(bytesOfFile);
         }
-        internal static string GetStringHash(string _string)
+        public static string GetStringHash(string _string)
         {
             byte[] bytesOfString = Encoding.UTF8.GetBytes(_string);
             return GetHash(bytesOfString);

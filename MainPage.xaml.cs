@@ -121,9 +121,7 @@ namespace MobTest
             {
                 synchroniser.CreateSyncDataStore();
             }
-            synchroniser.CompareDevicesSyncData();
-
-           
+            synchroniser.CompareDevicesSyncData();        
         }
     }
 }
